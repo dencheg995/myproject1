@@ -3,6 +3,7 @@ package ru.levelp.project.module;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.levelp.project.dao.MatchDAO;
 
 import javax.persistence.*;
 import javax.swing.text.html.parser.Entity;
@@ -16,11 +17,12 @@ import static ru.levelp.project.module.Match.SEARCH_BY_MATCH_ID;
 public class MatchTest {
     private EntityManager em;
     private EntityManagerFactory emf;
-
+    private MatchDAO dao;
     @Before
     public void setup() {
         emf = Persistence.createEntityManagerFactory("TestPersistenceUnit");
         em = emf.createEntityManager();
+        dao = new MatchDAO(em);
     }
 
     @After
@@ -29,35 +31,16 @@ public class MatchTest {
         emf.close();
     }
 
-    @Test
-    public void testCreateMatch() throws Throwable {
-        Match match = new Match("123", "some match");
 
-        em.getTransaction().begin();
-
-        try {
-            em.persist(match);
-        } catch (Throwable t) {
-            em.getTransaction().rollback();
-            throw t;
-
-        } finally {
-            em.getTransaction().commit();
-        }
-    }
 
 
     @Test
     public void testCreateMatchWithTeam() throws Throwable {
-        Match match = new Match("123", "some match");
-        Team team = new Team();
-        team.setName("some team");
-        match.setTeam(team);
+        Match match;
         em.getTransaction().begin();
 
         try {
-            em.persist(team);
-            em.persist(match);
+            match = dao.createMatch("123", "some match", dao.createTeam("some team"));
             em.getTransaction().commit();
         } catch (Throwable t) {
             em.getTransaction().rollback();
@@ -75,10 +58,8 @@ public class MatchTest {
         testCreateMatchWithTeam();
         String searchKey = "123";
 
-        @SuppressWarnings("unchecked")
-        List<Match> mst = (List<Match>) em.createNamedQuery(SEARCH_BY_MATCH_ID)
-                .setParameter("matchId", searchKey)
-                .getResultList();
+
+        List<Match> mst = dao.findByMatchId(searchKey);
 
         assertEquals(1, mst.size());
         Match found = mst.get(0);
