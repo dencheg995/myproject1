@@ -9,7 +9,9 @@ import javax.swing.text.html.parser.Entity;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static ru.levelp.project.module.Match.SEARCH_BY_MATCH_ID;
 
 public class MatchTest {
     private EntityManager em;
@@ -69,17 +71,19 @@ public class MatchTest {
     }
 
     @Test
-    public void createQuery() {
-        List<Match> mst = (List<Match>) em.createQuery("from Match where matchId = 84 ").getResultList();
-        try {
-            Match match = (Match) em.createQuery("from Match where id = 0-0").getSingleResult();
+    public void createQuery() throws Throwable {
+        testCreateMatchWithTeam();
+        String searchKey = "123";
 
-        } catch (NonUniqueResultException e) {
+        @SuppressWarnings("unchecked")
+        List<Match> mst = (List<Match>) em.createNamedQuery(SEARCH_BY_MATCH_ID)
+                .setParameter("matchId", searchKey)
+                .getResultList();
 
-        } catch (NoResultException no)
+        assertEquals(1, mst.size());
+        Match found = mst.get(0);
+        assertEquals(searchKey, found.getMatchId());
 
-        {
 
-        }
     }
 }

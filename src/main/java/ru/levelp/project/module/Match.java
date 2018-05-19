@@ -3,8 +3,14 @@ package ru.levelp.project.module;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static ru.levelp.project.module.Match.SEARCH_BY_MATCH_ID;
+
 @Entity
+@NamedQueries(
+        @NamedQuery(name = SEARCH_BY_MATCH_ID, query = "from Match where matchId = :matchId")
+)
 public class Match {
+    public static final String SEARCH_BY_MATCH_ID = "MyQuery";
     @Id
     @GeneratedValue
     private int id;
