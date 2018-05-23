@@ -38,5 +38,12 @@ public class MatchDAO {
                 .getResultList();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Match> findAllMatches() {
+        return em.createQuery("from Match ").getResultList();
+    }
 
+    public EntityManager getEm() {
+        return em;
+    }
 }

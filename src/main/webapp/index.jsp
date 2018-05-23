@@ -1,6 +1,6 @@
 <%@ page import="ru.levelp.project.module.Match" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="indexBean" type="ru.levelp.project.web.IndexBean" scope="application"/>
 <html>
 <head>
@@ -12,19 +12,23 @@
 <div>
     <table>
         <tbody>
-        <% for(Match match : indexBean.getMatches()){ %>
-        <tr>
-            <td>
-                <%= match.getMatchId()%>
-            </td>
-            <td>
-                <%= match.getTitle()%>
-            </td>
-        </tr>
-        <% } %>
+        <c:forEach var = "match" items="${indexBean.matches}" >
+            <tr>
+                <td>
+                    ${match.matchId}
+                </td>
+
+                <td>
+                        ${match.title}
+                </td>
+            </tr>
+        </c:forEach>
+
+
         </tbody>
 
     </table>
+    <a href = "addPart.jsp"> Add Matches</a>
 </div>
 </body>
 </html>

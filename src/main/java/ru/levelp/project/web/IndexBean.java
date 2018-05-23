@@ -17,8 +17,8 @@ public class IndexBean {
 
     }
 
-    @SuppressWarnings("unchecked")
+
     public List<Match> getMatches() {
-        return em.createQuery("from Match ").getResultList();
+        return new MatchDAO(em).findAllMatches();
     }
 }
