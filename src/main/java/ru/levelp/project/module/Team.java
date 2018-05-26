@@ -13,19 +13,20 @@ public class Team {
     @Column
     private String name;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Match> match;
 
     public List<Match> getMatch() {
         return match;
     }
 
+
+
     public void setMatch(List<Match> match) {
         this.match = match;
     }
 
-    public Team() {
-    }
+
 
     public int getId() {
         return id;

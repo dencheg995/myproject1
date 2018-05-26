@@ -30,16 +30,20 @@ public class Match {
         this.team = team;
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
     private Team team;
 
 
     public Match(String matchId, String title) {
-        this.matchId = matchId;
+        setMatchId(matchId);
         this.title = title;
     }
 
     public Match() {
+    }
+
+    public String getMatchId() {
+        return matchId;
     }
 
     public int getId() {
@@ -50,13 +54,13 @@ public class Match {
         this.id = id;
     }
 
-    public String getMatchId() {
-        return matchId;
-    }
-
     public void setMatchId(String matchId) {
+        if (matchId == null) throw new IllegalArgumentException("partId shouldn't be null");
+        if (matchId.length() < 3) throw new IllegalArgumentException("partId shouldn't be empty");
+
         this.matchId = matchId;
     }
+
 
     public String getTitle() {
         return title;

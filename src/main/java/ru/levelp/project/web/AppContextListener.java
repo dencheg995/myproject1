@@ -28,7 +28,7 @@ public class AppContextListener implements ServletContextListener {
         createTestMatches();
 
         servletContextEvent.getServletContext().setAttribute("indexBean", new IndexBean(em));
-        servletContextEvent.getServletContext().setAttribute("AddBean", new AddMatchBean(em));
+        servletContextEvent.getServletContext().setAttribute("addMatchBean", new AddMatchBean(em));
         servletContextEvent.getServletContext().setAttribute("MatchDAO", new MatchDAO(em));
 
 

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="AddBean" type="ru.levelp.project.web.AddMatchBean" scope="application" />
+<jsp:useBean id="addMatchBean" type="ru.levelp.project.web.AddMatchBean" scope="application" />
 <html>
 <head>
     <title>Add Match</title>
@@ -11,7 +11,7 @@
         <p>Title : <input type = "text" name = "title"></p>
         <p>Team :
             <select name = "team">
-                <c:forEach var = "Team" items = "${AddBean.team}">
+                <c:forEach var = "Team" items = "${addMatchBean.team}">
                     <option value="${Team.id}">${Team.name} </option>
                 </c:forEach>
 

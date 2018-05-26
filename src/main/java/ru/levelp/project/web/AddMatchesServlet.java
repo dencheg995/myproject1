@@ -1,7 +1,9 @@
 package ru.levelp.project.web;
 
 import ru.levelp.project.dao.MatchDAO;
+import ru.levelp.project.module.Match;
 import ru.levelp.project.module.Team;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,16 +24,17 @@ public class AddMatchesServlet extends HttpServlet{
         String teamID = req.getParameter("team");
 
 
-        MatchDAO dao = (MatchDAO)getServletContext().getAttribute("MatchDAO");
+
+        MatchDAO dao = (MatchDAO) getServletContext().getAttribute("MatchDAO");
         AddMatchBean addMatchBean = (AddMatchBean) getServletContext().getAttribute("addMatchBean");
 
-
+        Match match;
         dao.getEm().getTransaction().begin();
         try {
             Team TEAM = addMatchBean.teamFind(Integer.parseInt(teamID));
 
 
-            dao.createMatch(matchId, title, TEAM);
+            match = dao.createMatch(matchId, title, TEAM);
             dao.getEm().getTransaction().commit();
         }   catch (Throwable t){
             dao.getEm().getTransaction().rollback();
@@ -41,7 +44,10 @@ public class AddMatchesServlet extends HttpServlet{
             return;
         }
 
-        resp.sendRedirect("/");
+        AddMatchComletedBean bean = new AddMatchComletedBean(match.getMatchId(), match.getTitle(), match.getTeam().getName());
+
+        req.setAttribute("bean", bean);
+        req.getRequestDispatcher("/MatchedComleteAdd.jsp").forward(req,resp);
 
     }
 }
